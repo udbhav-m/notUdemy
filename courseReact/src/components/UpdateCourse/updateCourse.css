@@ -1,0 +1,27 @@
+.updateCard{
+    width: 35vw;
+}
+
+.updateCourseContainer{
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.updateFieldCard{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    gap: 1rem;
+    margin:0 2rem;
+}
+
+.textfieldUpdate{
+    width: 90%;
+}
+
+.typoPub{
+    padding: 0.5rem;
+}

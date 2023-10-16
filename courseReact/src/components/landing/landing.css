@@ -1,0 +1,28 @@
+.centerData{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10rem;
+    margin-top: 2rem;
+}
+
+.image{
+    display: flex;
+    gap: 1rem;
+}
+
+.leftData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    align-self: center;
+  }
