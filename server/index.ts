@@ -4,6 +4,7 @@ import { connect } from "mongoose";
 const app = express();
 const port = 3000;
 
+// express apps
 import adminApp from "./routes/admin";
 import userApp from "./routes/user";
 
