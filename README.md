@@ -1,27 +1,48 @@
-# React + TypeScript + Vite
+# notUdemy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+The Course Selling App is a full-stack web application for selling and managing courses. It's built using React, TypeScript, state management with Recoil, a backend with Express.js and MongoDB, and user authentication using JSON Web Tokens (JWT). The UI is designed with Material-UI (MUI).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+### Admin Functionality
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. **Signup**: Admins can create accounts with a username and password.
 
-- Configure the top-level `parserOptions` property like this:
+2. **Login**: Admins can log in securely using their credentials.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+3. **Add a Course**: Admins can add new courses to the platform, including details like title, description, price, image, and publication status.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+4. **View Courses**: Admins can view a list of all courses, including course details.
+
+5. **Delete Course**: Admins can delete courses they've added.
+
+6. **Update Course**: Admins can edit course details.
+
+### User Functionality
+
+1. **Signup**: Users can create accounts with a username and password.
+
+2. **Login**: Users can log in securely using their credentials.
+
+3. **View Courses**: Users can browse and view all available courses, including details.
+
+4. **Purchase Courses**: Authenticated users can purchase courses and gain access to the content.
+
+5. **View Purchased Courses**: Users can view the courses they've purchased.
+
+### Planned Features
+
+1. **Toasts for Alerts**: Implement toast notifications to provide alerts and feedback to users.
+
+2. **Payment Page**: Integrate a payment gateway for handling course purchases.
+
+3. **User side pages**: Although the backend part works, should add the frontend for it as well.
+
+## Technologies Used
+
+- **Frontend**: React, TypeScript, Recoil, Material-UI (MUI)
+- **Backend**: Express.js
+- **Database**: MongoDB
+- **Authentication**: JSON Web Tokens (JWT)
+
