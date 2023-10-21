@@ -10,11 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout code
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Update known_hosts
-        run: ssh-keyscan -H ec2-16-170-217-173.eu-north-1.compute.amazonaws.com >> ~/.ssh/known_hosts
+      - name: Prepare SSH
+        run: |
+          mkdir -p ~/.ssh
+          touch ~/.ssh/known_hosts
+          chmod 700 ~/.ssh
+          chmod 644 ~/.ssh/known_hosts
+          ssh-keyscan -H ec2-16-170-217-173.eu-north-1.compute.amazonaws.com >> ~/.ssh/known_hosts
 
       - name: SSH and Deploy
         env:
@@ -23,6 +28,4 @@ jobs:
         run: |
           echo "$SSH_KEY" > key
           chmod 600 key
-          mkdir -p ~/.ssh
-          cp known_hosts ~/.ssh/known_hosts
           ssh -i key ubuntu@ec2-16-170-217-173.eu-north-1.compute.amazonaws.com "source startServer.sh"
