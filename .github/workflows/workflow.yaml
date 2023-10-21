@@ -29,3 +29,4 @@ jobs:
           echo "$SSH_KEY" > key
           chmod 600 key
           ssh -i key ubuntu@ec2-16-170-217-173.eu-north-1.compute.amazonaws.com "source startServer.sh"
+          
