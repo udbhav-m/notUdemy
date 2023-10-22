@@ -46,8 +46,8 @@ app.post("/user/login", async (req, res) => {
   console.log(username);
   if (isValid) {
     let token = generateKeyForUser(req.body, secretKeyForUser);
-    console.log(token);
-    res.send(`logged in successfully ${username}. token: ${token}`);
+    console.log(`Logged-in successfully. welcome ${username}. Token: ${token}`);
+    res.json({ username: username, token: token });
   } else {
     console.log("Invalid login", req);
     res.send("Invalid login");
@@ -97,26 +97,26 @@ app.post("/user/courses/:Id", userAuthentication, async (req, res) => {
             { username: username },
             { coursesPurchased: [objId] }
           );
-          console.log(
-            `${username}, course ${courseToPurchase.CourseId} is purchased successfully`
-          );
-          res.send(
-            `${username}, course ${courseToPurchase.CourseId} is purchased successfully`
-          );
+          console.log({
+            message: `${username}, course ${courseToPurchase.CourseId} is purchased successfully`,
+          });
+          res.send({
+            message: `${username}, course ${courseToPurchase.CourseId} is purchased successfully`,
+          });
         } else {
-          console.log(
-            `${username}, course ${courseToPurchase.CourseId} is already purchased`
-          );
-          res.send(
-            `${username}, course ${courseToPurchase.CourseId} is already purchased`
-          );
+          console.log({
+            message: `${username}, course ${courseToPurchase.CourseId} is already purchased`,
+          });
+          res.json({
+            message: `${username}, course ${courseToPurchase.CourseId} is already purchased`,
+          });
         }
       }
     } else {
-      res.send(`Failed: course ${CourseId} doesn't exist`);
+      res.json({ message: `Failed: course ${CourseId} doesn't exist` });
     }
-  } catch (err) {
-    res.send(err);
+  } catch (err: any) {
+    res.json({ error: err.message });
   }
 });
 
@@ -155,11 +155,11 @@ app.get("/user/courses/:Id", userAuthentication, async (req, res) => {
       res.send(course);
     } else {
       console.log({ failed: `the course with ${courseId} does not exist` });
-      res.send({ failed: `the course with ${courseId} does not exist` });
+      res.json({ failed: `the course with ${courseId} does not exist` });
     }
   } catch (error: any) {
     console.log({ error: error.message });
-    res.send({ error: error.message });
+    res.json({ error: error.message });
   }
 });
 export default app;
