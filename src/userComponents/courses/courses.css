@@ -1,0 +1,14 @@
+.userCourseCardContainer{
+    padding: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.userDescription{
+    max-height: 50px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+

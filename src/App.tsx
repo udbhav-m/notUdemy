@@ -10,6 +10,9 @@ import Courses from "./components/courses/Courses.jsx";
 import GetCourse from "./components/getcourse/getCourse.jsx";
 import Landing from "./components/landing/landing.jsx";
 import UpdateCourse from "./components/UpdateCourse/updateCourse.js";
+import UserCourse from "./userComponents/courses/courses.js";
+import MyCourses from "./userComponents/myCourses/myCourses.js";
+import ViewCourse from "./userComponents/view/viewUserCourse.js";
 import { Routes } from "react-router-dom";
 
 function App() {
@@ -24,6 +27,10 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/courses/update/:Id" element={<UpdateCourse />} />
         <Route path="/courses/view/:Id" element={<GetCourse />} />
+
+        <Route path="/user/courses" element={<UserCourse />} />
+        <Route path="/mycourses" element={<MyCourses />} />
+        <Route path="/user/courses/view/:Id" element={<ViewCourse />} />
       </Routes>
     </div>
   );

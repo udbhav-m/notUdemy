@@ -47,15 +47,12 @@ function Courses() {
   async function getCourses() {
     setIsLoading(true);
     try {
-      const getAPi = await axios.get(
-        `${baseURL}/admin/courses`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            auth: token,
-          },
-        }
-      );
+      const getAPi = await axios.get(`${baseURL}/admin/courses`, {
+        headers: {
+          "Content-Type": "application/json",
+          auth: token,
+        },
+      });
       const res = getAPi.data;
       setCourses(res);
       console.log("loading");
@@ -67,15 +64,12 @@ function Courses() {
   async function deleteById(Id: number) {
     try {
       console.log(Id);
-      const delAPI = await axios.delete(
-        `${baseURL}/admin/courses/${Id}`,
-        {
-          headers: {
-            "Content-type": "application/json",
-            auth: token,
-          },
-        }
-      );
+      const delAPI = await axios.delete(`${baseURL}/admin/courses/${Id}`, {
+        headers: {
+          "Content-type": "application/json",
+          auth: token,
+        },
+      });
       console.log(delAPI.data);
       getCourses();
     } catch (err: any) {
@@ -122,6 +116,15 @@ export function CourseCard(props: props) {
             <b>${props.price}</b>
           </i>
         </Typography>
+        <Typography
+          style={{ padding: "1rem" }}
+          variant="body2"
+          color="text.secondary"
+        >
+          <i>
+            <b>{props.published ? "published" : "not published"}</b>
+          </i>
+        </Typography>
         <CardMedia
           component="img"
           height="250"
@@ -141,11 +144,6 @@ export function CourseCard(props: props) {
             color="text.secondary"
           >
             {props.description}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <i>
-              <b>{props.published}</b>
-            </i>
           </Typography>
         </CardContent>
       </CardActionArea>

@@ -63,8 +63,10 @@ function SignIn() {
         localStorage.setItem("token", res.token);
       }
 
-      if (localStorage.getItem("token")) {
+      if (localStorage.getItem("token") && adminLogin) {
         navigate("/courses");
+      } else {
+        navigate("/user/courses");
       }
     } catch (error: any) {
       console.log(error.message);
