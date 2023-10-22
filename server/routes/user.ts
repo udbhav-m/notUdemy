@@ -77,38 +77,42 @@ app.post("/user/courses/:Id", userAuthentication, async (req, res) => {
   try {
     let CourseId = parseInt(req.params.Id);
     let username = req.headers.username;
-    let publisedCourses = [];
-    publisedCourses = await courses.find({ published: true });
-    let courseToPurchase = publisedCourses.find(
-      (eachCourse) => eachCourse.CourseId == CourseId
-    );
-    if (courseToPurchase && !(courseToPurchase == undefined)) {
-      let cId = courseToPurchase.CourseId;
-      let currUser = await user.findOne({ username });
-      if (currUser && currUser.username == username) {
-        let courseExists = currUser.coursesPurchased.find(
-          (course: courseStructure) => {
-            return course.CourseId == cId;
-          }
+    let publishedCourses = await courses.find({ published: true });
+    let courseToPurchase: courseStructure = {};
+
+    publishedCourses.forEach((eachCourse) => {
+      if (eachCourse.CourseId === CourseId) {
+        courseToPurchase = eachCourse;
+      }
+    });
+
+    if (courseToPurchase) {
+      let currentUser = await user.findOne({ username });
+
+      if (currentUser) {
+        // Check if the course ID is present in coursesPurchased
+        const courseAlreadyPurchased = currentUser.coursesPurchased.some(
+          (purchasedCourseId) => purchasedCourseId.equals(courseToPurchase._id)
         );
-        if (!courseExists) {
-          let objId = courseToPurchase._id;
-          await user.findOneAndUpdate(
-            { username: username },
-            { coursesPurchased: [objId] }
-          );
+
+        if (!courseAlreadyPurchased) {
+          currentUser.coursesPurchased.push(courseToPurchase._id);
+          await currentUser.save();
+
           console.log({
-            message: `${username}, course ${courseToPurchase.CourseId} is purchased successfully`,
+            message: `${currentUser.username}, course ${CourseId} purchased successfully`,
           });
-          res.send({
-            message: `${username}, course ${courseToPurchase.CourseId} is purchased successfully`,
+
+          res.json({
+            message: `${currentUser.username}, course ${CourseId} purchased successfully`,
           });
         } else {
           console.log({
-            message: `${username}, course ${courseToPurchase.CourseId} is already purchased`,
+            message: `${currentUser.username}, course ${CourseId} is purchased already`,
           });
+
           res.json({
-            message: `${username}, course ${courseToPurchase.CourseId} is already purchased`,
+            message: `${currentUser.username}, course ${CourseId} is purchased already`,
           });
         }
       }

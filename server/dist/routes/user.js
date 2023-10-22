@@ -41,8 +41,8 @@ app.post("/user/login", (req, res) => __awaiter(void 0, void 0, void 0, function
     console.log(username);
     if (isValid) {
         let token = (0, middleware_1.generateKeyForUser)(req.body, middleware_1.secretKeyForUser);
-        console.log(token);
-        res.send(`logged in successfully ${username}. token: ${token}`);
+        console.log(`Logged-in successfully. welcome ${username}. Token: ${token}`);
+        res.json({ username: username, token: token });
     }
     else {
         console.log("Invalid login", req);
@@ -71,34 +71,44 @@ app.post("/user/courses/:Id", middleware_1.userAuthentication, (req, res) => __a
     try {
         let CourseId = parseInt(req.params.Id);
         let username = req.headers.username;
-        let publisedCourses = [];
-        publisedCourses = yield mongoose_1.courses.find({ published: true });
-        let courseToPurchase = publisedCourses.find((eachCourse) => eachCourse.CourseId == CourseId);
-        if (courseToPurchase && !(courseToPurchase == undefined)) {
-            let cId = courseToPurchase.CourseId;
-            let currUser = yield mongoose_1.user.findOne({ username });
-            if (currUser && currUser.username == username) {
-                let courseExists = currUser.coursesPurchased.find((course) => {
-                    return course.CourseId == cId;
-                });
-                if (!courseExists) {
-                    let objId = courseToPurchase._id;
-                    yield mongoose_1.user.findOneAndUpdate({ username: username }, { coursesPurchased: [objId] });
-                    console.log(`${username}, course ${courseToPurchase.CourseId} is purchased successfully`);
-                    res.send(`${username}, course ${courseToPurchase.CourseId} is purchased successfully`);
+        let publishedCourses = yield mongoose_1.courses.find({ published: true });
+        let courseToPurchase = {};
+        publishedCourses.forEach((eachCourse) => {
+            if (eachCourse.CourseId === CourseId) {
+                courseToPurchase = eachCourse;
+            }
+        });
+        if (courseToPurchase) {
+            let currentUser = yield mongoose_1.user.findOne({ username });
+            if (currentUser) {
+                // Check if the course ID is present in coursesPurchased
+                const courseAlreadyPurchased = currentUser.coursesPurchased.some((purchasedCourseId) => purchasedCourseId.equals(courseToPurchase._id));
+                if (!courseAlreadyPurchased) {
+                    currentUser.coursesPurchased.push(courseToPurchase._id);
+                    yield currentUser.save();
+                    console.log({
+                        message: `${currentUser.username}, course ${CourseId} purchased successfully`,
+                    });
+                    res.json({
+                        message: `${currentUser.username}, course ${CourseId} purchased successfully`,
+                    });
                 }
                 else {
-                    console.log(`${username}, course ${courseToPurchase.CourseId} is already purchased`);
-                    res.send(`${username}, course ${courseToPurchase.CourseId} is already purchased`);
+                    console.log({
+                        message: `${currentUser.username}, course ${CourseId} is purchased already`,
+                    });
+                    res.json({
+                        message: `${currentUser.username}, course ${CourseId} is purchased already`,
+                    });
                 }
             }
         }
         else {
-            res.send(`Failed: course ${CourseId} doesn't exist`);
+            res.json({ message: `Failed: course ${CourseId} doesn't exist` });
         }
     }
     catch (err) {
-        res.send(err);
+        res.json({ error: err.message });
     }
 }));
 // Get the list of purchased courses for a user
@@ -136,12 +146,12 @@ app.get("/user/courses/:Id", middleware_1.userAuthentication, (req, res) => __aw
         }
         else {
             console.log({ failed: `the course with ${courseId} does not exist` });
-            res.send({ failed: `the course with ${courseId} does not exist` });
+            res.json({ failed: `the course with ${courseId} does not exist` });
         }
     }
     catch (error) {
         console.log({ error: error.message });
-        res.send({ error: error.message });
+        res.json({ error: error.message });
     }
 }));
 exports.default = app;
