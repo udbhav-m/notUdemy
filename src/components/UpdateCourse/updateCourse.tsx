@@ -18,28 +18,29 @@ import {
 } from "@mui/material";
 import "./updateCourse.css";
 import axios from "axios";
+import { baseURL } from "../../common";
 
-interface courseStructure{
-  title: string
-  description: string
-  price: number
-  imageLink: string
-  published: boolean
-  CourseId: number
+interface courseStructure {
+  title: string;
+  description: string;
+  price: number;
+  imageLink: string;
+  published: boolean;
+  CourseId: number;
 }
 
-interface props{
-  funName?: (id: number) => void
-  CourseId: number
+interface props {
+  funName?: (id: number) => void;
+  CourseId: number;
 }
 
-function UpdateCourse():JSX.Element {
+function UpdateCourse(): JSX.Element {
   const navigate = useNavigate();
   const setAppBar = useSetRecoilState(appBarState);
   setAppBar("UpdateCourseAppBar");
   const [isLoading, setIsLoading] = useRecoilState(loadingState);
   const Id = useParams().Id;
-  const courseId = Id? parseInt(Id): console.log("invalid Id");
+  const courseId = Id ? parseInt(Id) : console.log("invalid Id");
   const token = localStorage.getItem("token");
   const [course, setCourse] = useState<courseStructure>();
   const { title, description, price, imageLink, published } =
@@ -51,7 +52,7 @@ function UpdateCourse():JSX.Element {
   async function getCourse() {
     setIsLoading(true);
     const getCAPI = await axios.get(
-      `http://localhost:3000/admin/courses/${courseId}`,
+      `${baseURL}/admin/courses/${courseId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +68,7 @@ function UpdateCourse():JSX.Element {
 
   async function updateCourse() {
     const addAPI = await axios.put(
-      `http://localhost:3000/admin/courses/${courseId}`,
+      `${baseURL}/admin/courses/${courseId}`,
       {
         title,
         description,
@@ -95,17 +96,20 @@ function UpdateCourse():JSX.Element {
       <div className="updateCourseContainer">
         {isLoading ? (
           <CircularProgress />
-        ) : (course)?
-        (
+        ) : course ? (
           <UpdateCard
-                  description={course.description}
-                  title={course.title}
-                  CourseId={course.CourseId}
-                  published={course.published}
-                  price={course.price}
-                  imageLink={course.imageLink} />
-        ): null}
-        <UpdateFields funName={updateCourse} CourseId={(courseId)?courseId:0} />
+            description={course.description}
+            title={course.title}
+            CourseId={course.CourseId}
+            published={course.published}
+            price={course.price}
+            imageLink={course.imageLink}
+          />
+        ) : null}
+        <UpdateFields
+          funName={updateCourse}
+          CourseId={courseId ? courseId : 0}
+        />
       </div>
     </>
   );
@@ -225,9 +229,8 @@ function UpdateFields(props: props) {
         }
       />
       <Button
-        onClick={() => { props.funName?
-          props.funName(props.CourseId):
-          null;
+        onClick={() => {
+          props.funName ? props.funName(props.CourseId) : null;
         }}
         variant="contained"
       >

@@ -13,6 +13,7 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import axios from "axios";
+import { baseURL } from "../../common";
 
 function AddCourse() {
   const setAppBar = useSetRecoilState(appBarState);
@@ -23,7 +24,7 @@ function AddCourse() {
 
   async function addCourse() {
     const addAPI = await axios.post(
-      "http://localhost:3000/admin/courses",
+      `${baseURL}/admin/courses`,
       {
         title,
         description,
@@ -53,7 +54,10 @@ function AddCourse() {
   );
 }
 
-function AddCourseCard(props: { published: boolean | undefined; funName: () => void; }) {
+function AddCourseCard(props: {
+  published: boolean | undefined;
+  funName: () => void;
+}) {
   const setAddCourseData = useSetRecoilState(addCourseState);
   return (
     <Card className="addCoursecard">
@@ -88,7 +92,7 @@ function AddCourseCard(props: { published: boolean | undefined; funName: () => v
         onChange={(e) =>
           setAddCourseData((prevdata) => ({
             ...prevdata,
-            price: parseInt( e.target.value),
+            price: parseInt(e.target.value),
           }))
         }
         className="textfieldAdd"

@@ -22,6 +22,7 @@ import {
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { baseURL } from "../../common";
 
 interface signInProps {
   funName: () => void;
@@ -40,9 +41,9 @@ function SignIn() {
     try {
       let URL: string = "";
       userLogin
-        ? (URL = `http://localhost:3000/user/login`)
+        ? (URL = `${baseURL}/user/login`)
         : adminLogin
-        ? (URL = `http://localhost:3000/admin/login`)
+        ? (URL = `${baseURL}/admin/login`)
         : "";
       const signInAPI = await axios.post(
         URL,
